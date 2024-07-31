@@ -2,6 +2,8 @@ package org.diegovelu.hibernateapp.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name="clientes")
 public class Cliente {
@@ -15,6 +17,11 @@ public class Cliente {
 
     @Column(name="forma_pago")
     private String formaPago;
+
+    @Embedded
+    private Auditoria auditoria = new Auditoria();
+
+
 
     public Cliente() {
     }
@@ -30,6 +37,8 @@ public class Cliente {
         this.nombre = nombre;
         this.apellido = apellido;
     }
+
+
 
     public void setId(Long id) {
         this.id = id;
@@ -63,11 +72,18 @@ public class Cliente {
         this.formaPago = formaPago;
     }
 
+
+
     @Override
     public String toString() {
+        LocalDateTime creado = this.auditoria != null ? auditoria.getCreadoEn():null;
+        LocalDateTime modificado = this.auditoria != null ? auditoria.getModificadoEn():null;
         return "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
-                ", formaPago='" + formaPago ;
+                ", formaPago='" + formaPago + '\'' +
+                ", creadoEn=" + creado + '\'' +
+                ", modificadoEn=" + modificado
+                ;
     }
 }
